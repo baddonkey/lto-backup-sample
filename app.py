@@ -22,8 +22,9 @@ logging.basicConfig(
     datefmt="%Y-%m-%d %H:%M:%S",
 )
 
-source = Path("/Users/stefanbader/Downloads")
-tapes  = Path("/Users/stefanbader/Desktop/tape_out1")
+source = Path.home() / "Downloads"
+tapes  = Path.home() / "remp/tape-output"
+
 tapes.mkdir(parents=True, exist_ok=True)
 
 config = BackupConfig(
