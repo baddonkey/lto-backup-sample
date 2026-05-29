@@ -11,15 +11,15 @@ from lto_backup.wiring.container import build_backup_service
 
 # --- configure logging ---
 _log_cfg_path = Path(__file__).parent / "logging.json"
-_log_level_str = "INFO"
+_log_cfg = {}
 if _log_cfg_path.exists():
     with _log_cfg_path.open() as _f:
-        _log_level_str = json.load(_f).get("log_level", "INFO")
+        _log_cfg = json.load(_f)
 
 logging.basicConfig(
-    level=getattr(logging, _log_level_str.upper(), logging.INFO),
-    format="%(asctime)s %(levelname)-8s %(name)s %(message)s",
-    datefmt="%Y-%m-%d %H:%M:%S",
+    level=getattr(logging, _log_cfg.get("log_level", "INFO").upper(), logging.INFO),
+    format=_log_cfg.get("format"),
+    datefmt=_log_cfg.get("datefmt"),
 )
 
 source = Path.home() / "Downloads"
@@ -30,8 +30,8 @@ tapes.mkdir(parents=True, exist_ok=True)
 config = BackupConfig(
     source_root=source,
     tapes_root=tapes,
-    tape_nominal_capacity_bytes=10_000_000_000,   # 18 TB (LTO-9)
-    max_container_size_bytes=1_000_000_000,         # 100 GB containers
+    tape_nominal_capacity_bytes=10_000_000_000,   
+    max_container_size_bytes=1_000_000_000,
 )
 
 # --- backup ---
