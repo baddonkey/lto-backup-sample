@@ -23,7 +23,7 @@ logging.basicConfig(
 )
 
 source = Path.home() / "Downloads"
-tapes  = Path.home() / "remp/tape-output"
+tapes  = Path.home() / "temp/tape-output"
 
 tapes.mkdir(parents=True, exist_ok=True)
 
