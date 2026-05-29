@@ -6,6 +6,7 @@ from lto_backup.config.backup_config import BackupConfig
 from lto_backup.infrastructure.catalog.json_catalog_serializer import JsonCatalogSerializer
 from lto_backup.infrastructure.filesystem.sha256_file_hasher import Sha256FileHasher
 from lto_backup.infrastructure.simulator.simulator_tape_drive import SimulatorTapeDrive
+from lto_backup.services.report_service import ReportService
 from lto_backup.services.verification_service import VerificationService
 from lto_backup.wiring.container import build_backup_service
 
@@ -24,6 +25,7 @@ logging.basicConfig(
 
 source = Path.home() / "Downloads"
 tapes  = Path.home() / "temp/tape-output"
+reports = Path.home() / "temp/tape-reports"
 
 tapes.mkdir(parents=True, exist_ok=True)
 
@@ -50,3 +52,7 @@ if errors:
         print("CORRUPT:", e)
 else:
     print("All tapes verified clean.")
+
+# --- report ---
+report_path = ReportService().generate(catalog, errors, reports)
+print(f"Report written to: {report_path}")
