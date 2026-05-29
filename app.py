@@ -46,13 +46,13 @@ verifier = VerificationService(
     JsonCatalogSerializer(),
     Sha256FileHasher(),
 )
-errors = verifier.verify(catalog)
-if errors:
-    for e in errors:
+report = verifier.verify(catalog)
+if report.errors:
+    for e in report.errors:
         print("CORRUPT:", e)
 else:
     print("All tapes verified clean.")
 
 # --- report ---
-report_path = ReportService().generate(catalog, errors, reports)
+report_path = ReportService().generate(catalog, report, reports)
 print(f"Report written to: {report_path}")
